@@ -21,12 +21,8 @@ alias zhsync="history_sync_pull && history_sync_push"
 GIT=$(which git)
 GPG=$(which gpg)
 
-ZSH_HISTORY_PROJ=${ZSH_HISTORY_PROJ:-"${HOME}/.zsh_history_proj"}
-ZSH_HISTORY_FILE_NAME=${ZSH_HISTORY_FILE_NAME:-".zsh_history"}
-ZSH_HISTORY_FILE=${ZSH_HISTORY_FILE:-"${HOME}/${ZSH_HISTORY_FILE_NAME}"}
-ZSH_HISTORY_FILE_ENC_NAME=${ZSH_HISTORY_FILE_ENC_NAME:-"zsh_history"}
-ZSH_HISTORY_FILE_ENC=${ZSH_HISTORY_FILE_ENC:-"${ZSH_HISTORY_PROJ}/${ZSH_HISTORY_FILE_ENC_NAME}"}
-ZSH_HISTORY_FILE_DECRYPT_NAME=${ZSH_HISTORY_FILE_DECRYPT_NAME:-"zsh_history_decrypted"}
+ZSH_HISTORY_PROJ=${HOME}/.zsh_history_proj
+ZSH_HISTORY_FILE_NAME=.zsh_history
 GIT_COMMIT_MSG="latest $(date)"
 
 function _print_git_error_msg() {
@@ -56,6 +52,10 @@ function _usage() {
 
 # Pull current master, decrypt, and merge with .zsh_history
 function history_sync_pull() {
+    ZSH_HISTORY_FILE_ENC_NAME=zsh_history
+    ZSH_HISTORY_FILE=${HOME}/${ZSH_HISTORY_FILE_NAME}
+    ZSH_HISTORY_FILE_ENC=${ZSH_HISTORY_PROJ}/${ZSH_HISTORY_FILE_ENC_NAME}
+    ZSH_HISTORY_FILE_DECRYPT_NAME=zsh_history_decrypted
     DIR=$(pwd)
 
     # Backup
@@ -85,6 +85,10 @@ function history_sync_pull() {
 
 # Encrypt and push current history to master
 function history_sync_push() {
+    ZSH_HISTORY_FILE_ENC_NAME=zsh_history
+    ZSH_HISTORY_FILE=${HOME}/${ZSH_HISTORY_FILE_NAME}
+    ZSH_HISTORY_FILE_ENC=${ZSH_HISTORY_PROJ}/${ZSH_HISTORY_FILE_ENC_NAME}
+    ZSH_HISTORY_FILE_DECRYPT_NAME=zsh_history_decrypted
     # Get options recipients, force
     local recipients=()
     local force=false
